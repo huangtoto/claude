@@ -5,11 +5,20 @@
 **LINE Notify 將於 2025/3/31 停止服務！**
 
 本專案已更新為使用以下替代通知方案：
-- ✅ **Telegram Bot**（推薦：免費、永久、最簡單）
-- ✅ **Discord Webhook**（適合已使用 Discord 的使用者）
-- ✅ **LINE Messaging API**（官方推薦，但需建立 LINE Bot）
 
-詳細設定請參考 `NOTIFICATION_SETUP.md`
+**🌟 不需要額外 App：**
+- ✅ **Email 通知**（推薦：每個人都有，不用裝 App）
+- ✅ **桌面通知**（適合電腦在公司的人）
+- ✅ **網頁版**（開瀏覽器就能看）
+
+**📱 需要 App：**
+- ✅ **Telegram Bot**（免費、永久、最簡單）
+- ✅ **Discord Webhook**（適合已使用 Discord 的使用者）
+- ✅ **Slack Webhook**（適合公司有用 Slack 的人）
+- ✅ **LINE Messaging API**（官方推薦，但設定複雜）
+
+📖 **不想裝 App？請看** `NO_APP_SETUP.md` ⭐
+📖 **想用 Telegram/Discord？請看** `NOTIFICATION_SETUP.md`
 
 ---
 
@@ -21,46 +30,88 @@
 
 ## 通知方案比較
 
-### 方案一：Telegram Bot（最推薦⭐）
+### 🌟 不需要額外 App 的方案
+
+#### 方案一：Email 通知（最推薦⭐）
+
+**優點：**
+- ✅ 不需要裝 App
+- ✅ 每個人都有 Email
+- ✅ 手機會自動推播
+- ✅ 完全免費
+
+**缺點：**
+- ⚠️ 需要設定 SMTP（約 5 分鐘）
+
+**適合：不想裝額外 App 的所有人**
+
+#### 方案二：桌面通知
+
+**優點：**
+- ✅ 不需要帳號
+- ✅ 電腦螢幕直接彈出
+- ✅ 零設定
+
+**缺點：**
+- ⚠️ 電腦需要開機
+- ⚠️ 手機收不到
+
+**適合：電腦會在公司開機的人**
+
+#### 方案三：網頁版
+
+**優點：**
+- ✅ 最簡單！不需要任何設定
+- ✅ 開瀏覽器就能看
+- ✅ 可設為首頁
+
+**缺點：**
+- ⚠️ 需要主動開啟
+
+**適合：想要最簡單方案的人**
+
+---
+
+### 📱 需要 App 的方案
+
+#### 方案四：Telegram Bot
 
 **優點：**
 - ✅ 完全免費、無訊息數量限制
-- ✅ 設定超簡單（5分鐘完成）
+- ✅ 設定簡單（5分鐘完成）
 - ✅ 跨平台：手機、電腦都能用
-- ✅ 不需要申請審核
 
 **缺點：**
 - ⚠️ 需要安裝 Telegram App
 
-**適合：想要最簡單、最穩定方案的使用者**
+**適合：願意裝 App 的使用者**
 
-### 方案二：Discord Webhook
+#### 方案五：Discord Webhook
 
 **優點：**
 - ✅ 完全免費
 - ✅ 設定簡單（3分鐘完成）
-- ✅ 適合已經使用 Discord 的人
 
 **缺點：**
 - ⚠️ 需要有 Discord 帳號
 
 **適合：已經在使用 Discord 的使用者**
 
-### 方案三：LINE Messaging API
+#### 方案六：LINE Messaging API
 
 **優點：**
 - ✅ LINE 官方推薦替代方案
 - ✅ 繼續使用 LINE（不用額外裝 App）
-- ✅ 每月有免費額度
 
 **缺點：**
 - ⚠️ 設定較複雜（需建立 LINE Bot）
 - ⚠️ 超過免費額度需付費
-- ⚠️ 需要 LINE Business 帳號
 
 **適合：堅持使用 LINE 的使用者**
 
-### 方案四：簡化方案（零技術門檻）
+---
+
+### 🎯 零技術門檻方案
 
 **直接解決問題的思路：**
 1. **永遠帶杯子** - 買個輕便折疊杯（150元）
@@ -81,15 +132,20 @@
 
 ### 1️⃣ 選擇通知方式並設定
 
-**最簡單：Telegram（5分鐘）**
-```bash
-# 詳細步驟請看 NOTIFICATION_SETUP.md
-python3 notifier_telegram.py
-```
+**🌟 不想裝 App？（推薦）**
+- **Email** → `notifier_email.py`
+- **桌面通知** → `notifier_desktop.py`
+- **網頁版** → `notifier_web.py`
 
-**其他方式：**
-- Discord Webhook → `notifier_discord.py`
-- LINE Messaging API → `notifier_line_bot.py`
+詳細步驟：`NO_APP_SETUP.md`
+
+**📱 可以裝 App？**
+- **Telegram** → `notifier_telegram.py`
+- **Discord** → `notifier_discord.py`
+- **Slack** → `notifier_slack.py`
+- **LINE Bot** → `notifier_line_bot.py`
+
+詳細步驟：`NOTIFICATION_SETUP.md`
 
 ### 2️⃣ 選擇判斷方式
 
@@ -101,8 +157,8 @@ python3 notifier_telegram.py
 
 ```bash
 crontab -e
-# 每天早上 7:30 執行
-30 7 * * 1-5 python3 /path/to/notifier_telegram.py
+# 每天早上 7:00 執行（以 Email 為例）
+0 7 * * 1-5 python3 /path/to/notifier_email.py
 ```
 
 完整說明請看 `QUICKSTART.md`
