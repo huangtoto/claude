@@ -1,0 +1,27 @@
+{
+  "_comment": "飲料時間表配置檔 - 選擇使用 weekly_pattern 或 dates",
+
+  "weekly_pattern": {
+    "_comment": "依星期規律設定（true=有飲料, false=無飲料, null=不確定）",
+    "monday": true,
+    "tuesday": false,
+    "wednesday": true,
+    "thursday": false,
+    "friday": true,
+    "saturday": null,
+    "sunday": null
+  },
+
+  "dates": {
+    "_comment": "特定日期設定（會覆蓋 weekly_pattern）",
+    "2025-11-18": true,
+    "2025-11-19": false,
+    "2025-11-20": true
+  },
+
+  "default": {
+    "_comment": "預設行為（當無法判斷時）",
+    "assume_has_beverage": true,
+    "send_uncertain_reminder": true
+  }
+}
