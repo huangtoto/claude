@@ -1,17 +1,38 @@
 # 快速開始指南
 
+## ⚠️ 重要：LINE Notify 將於 2025/3/31 停止服務
+
+本指南已更新為使用 **Telegram Bot**（最簡單、免費、永久有效）
+
+---
+
 ## 最快 5 分鐘設定完成！
 
-### 步驟 1️⃣：取得 LINE Notify Token (2分鐘)
+### 步驟 1️⃣：設定 Telegram Bot (3分鐘)
 
-1. 用手機或電腦開啟 https://notify-bot.line.me/
-2. 登入 LINE 帳號
-3. 點選「個人頁面」→「發行權杖」
-4. 權杖名稱輸入：`早餐提醒`
-5. 選擇「透過 1 對 1 聊天接收通知」
-6. 按「發行」並**複製權杖**（很重要！只會顯示一次）
+#### 1-1. 安裝 Telegram（如果還沒有）
+- 手機：App Store/Google Play 搜尋「Telegram」
+- 電腦：https://desktop.telegram.org/
 
-### 步驟 2️⃣：下載並設定程式 (2分鐘)
+#### 1-2. 建立 Bot
+1. 在 Telegram 搜尋 `@BotFather`
+2. 發送 `/start`
+3. 發送 `/newbot`
+4. 輸入 Bot 名稱：`早餐提醒小幫手`
+5. 輸入使用者名稱：`breakfast_reminder_bot`（或其他以 bot 結尾的名稱）
+6. **複製 Bot Token**（長得像：`1234567890:ABCdef...`）
+
+#### 1-3. 取得 Chat ID
+1. 搜尋並開啟你剛建立的 Bot
+2. 發送 `/start` 給它
+3. 開啟瀏覽器，前往：
+   ```
+   https://api.telegram.org/bot你的TOKEN/getUpdates
+   ```
+   （把「你的TOKEN」換成剛才複製的）
+4. 找到 `"chat":{"id":數字}`，那個數字就是你的 Chat ID
+
+### 步驟 2️⃣：下載並設定程式 (1分鐘)
 
 ```bash
 # 1. 下載程式（如果還沒有的話）
@@ -21,20 +42,20 @@ cd breakfast-beverage-alerts
 # 2. 安裝套件
 pip3 install -r requirements.txt
 
-# 3. 編輯設定檔，貼上你的 LINE Token
-nano simple_notifier.py
-# 找到 LINE_NOTIFY_TOKEN = "YOUR_LINE_NOTIFY_TOKEN_HERE"
-# 改成你的權杖，例如：
-# LINE_NOTIFY_TOKEN = "AbCdEf123456..."
+# 3. 編輯設定檔
+nano notifier_telegram.py
+# 修改這兩行：
+# TELEGRAM_BOT_TOKEN = "你的Bot_Token"
+# TELEGRAM_CHAT_ID = "你的Chat_ID"
 ```
 
 ### 步驟 3️⃣：測試執行 (30秒)
 
 ```bash
-python3 simple_notifier.py
+python3 notifier_telegram.py
 ```
 
-✓ 如果你的 LINE 收到訊息，就成功了！
+✓ 如果你的 Telegram 收到訊息，就成功了！
 
 ### 步驟 4️⃣：設定每天自動執行 (30秒)
 
@@ -42,22 +63,38 @@ python3 simple_notifier.py
 ```bash
 crontab -e
 # 加入這一行（每天早上 7:30 執行）
-30 7 * * 1-5 cd /home/你的使用者名稱/breakfast-beverage-alerts && /usr/bin/python3 simple_notifier.py
+30 7 * * 1-5 cd /path/to/breakfast-beverage-alerts && /usr/bin/python3 notifier_telegram.py
 ```
 
 **Windows:**
 1. 開啟「工作排程器」
 2. 建立基本工作 → 名稱：早餐提醒
 3. 觸發：每天早上 7:30，週一到週五
-4. 動作：執行 `python simple_notifier.py`
+4. 動作：執行 `python notifier_telegram.py`
 
 ---
 
-## 🎯 三種使用方式
+---
+
+## 🎯 其他通知方式
+
+### 不想用 Telegram？
+
+**Discord Webhook（3分鐘設定）**
+- 適合已經在用 Discord 的人
+- 詳細步驟：`NOTIFICATION_SETUP.md`
+
+**LINE Messaging API（15分鐘設定）**
+- 繼續使用 LINE（但設定較複雜）
+- 詳細步驟：`NOTIFICATION_SETUP.md`
+
+---
+
+## 🎯 三種判斷方式
 
 ### 方式 A：簡單規則（最簡單）
 
-直接修改 `simple_notifier.py` 的規則：
+修改程式中的規則：
 
 ```python
 # 週一、三、五有飲料
@@ -71,9 +108,9 @@ has_beverage_days = [0, 2, 4]  # 0=週一, 2=週三, 4=週五
 ```json
 {
   "weekly_pattern": {
-    "monday": true,      # 週一有飲料
-    "tuesday": false,    # 週二沒有
-    "wednesday": true,   # 週三有
+    "monday": true,
+    "tuesday": false,
+    "wednesday": true,
     "thursday": false,
     "friday": true
   }
@@ -82,13 +119,13 @@ has_beverage_days = [0, 2, 4]  # 0=週一, 2=週三, 4=週五
 
 ### 方式 C：OCR 自動識別（進階）
 
-想要全自動？使用 `breakfast_notifier.py`（需要安裝 tesseract-ocr）
+想要全自動？需要安裝 tesseract-ocr
 
 詳細說明請看 `setup_guide.md`
 
 ---
 
-## 📱 收到的通知範例
+## 📱 Telegram 收到的通知範例
 
 **有飲料時：**
 ```
@@ -114,7 +151,7 @@ has_beverage_days = [0, 2, 4]  # 0=週一, 2=週三, 4=週五
 
 改 crontab 時間：
 ```bash
-0 21 * * 0-4 python3 simple_notifier.py  # 週日到週四晚上 9:00
+0 21 * * 0-4 python3 notifier_telegram.py  # 週日到週四晚上 9:00
 ```
 
 並修改程式訊息為「明天的早餐」
@@ -122,20 +159,37 @@ has_beverage_days = [0, 2, 4]  # 0=週一, 2=週三, 4=週五
 ### 想要更早提醒（7:00）？
 
 ```bash
-0 7 * * 1-5 python3 simple_notifier.py
+0 7 * * 1-5 python3 notifier_telegram.py
 ```
 
 ### 只想在有飲料時收到提醒？
 
-修改 `simple_notifier.py`，只在 `has_beverage == True` 時發送。
+修改程式，只在 `has_beverage == True` 時發送。
+
+### 想要同時發送到多個平台？
+
+修改程式同時呼叫多個發送函數：
+```python
+send_telegram_message(message, BOT_TOKEN, CHAT_ID)
+send_discord_message(message, WEBHOOK_URL)
+```
 
 ---
 
 ## ❓ 遇到問題？
 
-**收不到通知？**
-- 檢查 LINE Token 是否正確
+**收不到 Telegram 通知？**
+- 檢查 Bot Token 是否正確
+- 檢查 Chat ID 是否正確
+- 確認有對 Bot 發送過 `/start`
 - 執行程式看有無錯誤訊息
+
+**找不到 Chat ID？**
+```
+開啟：https://api.telegram.org/bot你的TOKEN/getUpdates
+發送訊息給 Bot 後重新整理頁面
+找到 "chat":{"id":數字}
+```
 
 **定時沒執行？**
 ```bash
